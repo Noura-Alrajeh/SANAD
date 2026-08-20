@@ -1,0 +1,6 @@
+__pycache__/
+.gradio/
+raw/
+processed/text/
+*.gdoc
+.ipynb_checkpoints/

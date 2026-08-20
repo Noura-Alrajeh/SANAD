@@ -1,0 +1,11 @@
+gradio==5.9.1
+sentence-transformers
+numpy
+pdfplumber
+pypdf
+requests
+beautifulsoup4
+lxml
+jsonschema
+anthropic
+openai

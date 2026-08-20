@@ -1,0 +1,212 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.org/itu-airediness/manifest.schema.json",
+  "title": "AI Readiness Knowledge Base — Document Manifest Record",
+  "description": "One row of manifest.csv. Describes a single publicly available national policy/regulatory document contributed to the ITU AI Readiness knowledge base.",
+  "type": "object",
+  "required": [
+    "doc_id",
+    "tier",
+    "title_en",
+    "issuing_body",
+    "country",
+    "doc_type",
+    "status",
+    "sector",
+    "language"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "doc_id": {
+      "type": "string",
+      "description": "Stable identifier. Format: {COUNTRY}-{BODY}-{SHORTNAME}-{YEAR}. Never reuse or renumber; downstream chunk IDs depend on it.",
+      "pattern": "^[A-Z]{2,4}-[A-Z0-9]{2,12}-[A-Z0-9]{2,20}-[0-9]{4}$",
+      "examples": [
+        "KSA-SDAIA-AIETHICS-2023",
+        "KSA-SAMA-CSF-2017"
+      ]
+    },
+    "tier": {
+      "type": "string",
+      "enum": [
+        "core",
+        "referenced",
+        "method"
+      ],
+      "description": "core = ingested and analysed; referenced = cited in the report with a verified URL, not retrieved or indexed; method = methodological reference."
+    },
+    "title_en": {
+      "type": "string",
+      "minLength": 4,
+      "description": "Official English title as printed on the document. Do not paraphrase."
+    },
+    "title_ar": {
+      "type": "string",
+      "description": "Official Arabic title, if the document has one."
+    },
+    "issuing_body": {
+      "type": "string",
+      "minLength": 2,
+      "description": "Publishing authority, e.g. SDAIA, SAMA, NCA, NDMO, CST, DGA, NIST."
+    },
+    "country": {
+      "type": "string",
+      "pattern": "^[A-Z]{3}$",
+      "description": "ISO 3166-1 alpha-3. Use INT for international/non-national reference documents.",
+      "examples": [
+        "SAU",
+        "USA",
+        "INT"
+      ]
+    },
+    "doc_type": {
+      "type": "string",
+      "enum": [
+        "law",
+        "implementing_regulation",
+        "regulation",
+        "framework",
+        "guidelines",
+        "controls",
+        "strategy",
+        "standard",
+        "policy",
+        "circular",
+        "charter",
+        "report"
+      ]
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "binding",
+        "advisory",
+        "draft",
+        "superseded",
+        "unknown"
+      ],
+      "description": "Legal force. CRITICAL: gap analysis is meaningless if binding and advisory instruments are conflated. 'unknown' is permitted but must be resolved before submission."
+    },
+    "sector": {
+      "type": "string",
+      "enum": [
+        "finance",
+        "health",
+        "education",
+        "agriculture",
+        "cross_sector",
+        "general"
+      ]
+    },
+    "year": {
+      "type": "integer",
+      "minimum": 1990,
+      "maximum": 2100,
+      "description": "Year of the specific version held, not of first issuance."
+    },
+    "version": {
+      "type": "string",
+      "description": "Version/revision string as printed, e.g. '1.0', 'Rev. 5', 'M/19'."
+    },
+    "url": {
+      "type": "string",
+      "format": "uri",
+      "pattern": "^https?://",
+      "description": "Direct URL to the document as published by the issuing body. Prefer the authority's own domain over any aggregator or mirror."
+    },
+    "url_accessed": {
+      "type": "string",
+      "format": "date",
+      "description": "ISO date the URL was last successfully fetched. Written by fetch.py."
+    },
+    "http_status": {
+      "type": "integer",
+      "description": "HTTP status of last fetch attempt. Written by fetch.py."
+    },
+    "format": {
+      "type": "string",
+      "enum": [
+        "pdf",
+        "html",
+        "json",
+        "docx",
+        "xlsx",
+        "txt",
+        "unknown"
+      ],
+      "description": "Detected on fetch; for manually retrieved copies, the format of the held file rather than the URL response (see notes)."
+    },
+    "language": {
+      "type": "string",
+      "enum": [
+        "ar",
+        "en",
+        "ar-en"
+      ],
+      "description": "Language of the held copy."
+    },
+    "is_official_translation": {
+      "type": "boolean",
+      "description": "True when an English copy is a translation of an Arabic authoritative original. In Saudi law the Arabic text governs; record this so the limitation can be stated honestly."
+    },
+    "sha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$",
+      "description": "SHA-256 of the fetched bytes. Written by fetch.py. Changes flag upstream revision — see `verify`."
+    },
+    "bytes": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "page_count": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "PDF page count, or 0 for HTML."
+    },
+    "itu_factors": {
+      "type": "array",
+      "description": "ITU AI Readiness factors this document evidences.",
+      "items": {
+        "type": "string",
+        "enum": [
+          "data",
+          "research",
+          "deployment_support",
+          "standards",
+          "open_source",
+          "sandbox"
+        ]
+      },
+      "uniqueItems": true
+    },
+    "itu_dimensions": {
+      "type": "array",
+      "description": "ITU AI Readiness dimensions (1-13) this document evidences.",
+      "items": {
+        "type": "integer",
+        "minimum": 1,
+        "maximum": 13
+      },
+      "uniqueItems": true
+    },
+    "reference_pair": {
+      "type": "string",
+      "description": "If this national document is analysed against an international reference, the doc_id of that reference. Drives the gap-detection engine.",
+      "examples": [
+        "USA-NIST-SP80053-2020",
+        "USA-NIST-AIRMF-2023"
+      ]
+    },
+    "license_note": {
+      "type": "string",
+      "description": "Redistribution terms. Default assumption: publicly readable does NOT mean redistributable. Raw copies stay local unless this says otherwise."
+    },
+    "local_path": {
+      "type": "string",
+      "description": "Path under kb/raw/. Written by fetch.py. Gitignored by default."
+    },
+    "notes": {
+      "type": "string"
+    }
+  }
+}
