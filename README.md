@@ -68,12 +68,12 @@ standardized ITU AI Readiness record format. Validate with
 Raw source documents are **not** redistributed; `fetch.py` re-obtains the
 identical corpus from the issuing bodies and verifies each hash.
 
-## Honest limitations (see report §7 and Appendix D)
 
-Anchored-set recall is an optimistic floor (21/36 subdomains covered).
-The evidenced-absence / not-tested split relies on a hand-curated family map;
-broadening it would reclassify some of the 53, not change any judgment.
-Four clause identifiers are duplicated in the source PDF (§6); corrected-
-denominator coverage is 57.0% vs the reported 57.7%. An initial run left 12
-debates unresolved (recorded as abstentions); the completed run moved one
-clause (161→162) and no other headline figure.
+
+## Scope and limitations
+
+Anchored-set recall is an optimistic floor: the family map covers 21 of 36
+subdomains, and the evidenced-absence / not-tested split depends on that
+hand-curated map — broadening it would reclassify some of the 53 not-tested
+clauses, not change any judgment. The full account, including two figure-level
+corrections, is in report §7 and Appendix D.
