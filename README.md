@@ -7,20 +7,23 @@ evidence is not a verbatim quote of both texts. The name is the method: in the
 Arabic scholarly tradition, a *sanad* is the chain of transmission that
 authenticates a text, and this system accepts no finding without one.
 
-Report: `report.pdf` · Demo video: link included in the submitted report · Dashboard: `python app.py` (or open `launch.ipynb`)
+Technical report to be released with the forthcoming paper · Demo video: link included in the submitted report · Dashboard: `python app.py` (or open `launch.ipynb`)
 
 ## Quickstart (free-tier Colab or any Python 3.10+)
 
 ```bash
 git clone https://github.com/Noura-Alrajeh/SANAD.git && cd SANAD
 pip install -q -r requirements.txt
-python app.py selftest     # prints every headline figure, computed live
+python app.py selftest     # headline figures, read from the pipeline's own output files
 python app.py              # launches the Gradio dashboard
 ```
 
 `selftest` computes the headline figures **from the pipeline's own output files**
-— there is no second copy of the numbers to drift out of sync. Reconcile its
-output against §3/§6 of the report; the demo video opens with this command.
+— there is no second copy of the numbers to drift out of sync. The pipeline runs end-to-end
+mechanically; reproducing the report's figures requires the full prompt texts, which will be
+released with the forthcoming paper (available on request). The full output files are held back for
+the same reason: `processed/findings_sample.jsonl` carries the first ten records as an illustration,
+and `selftest` will name the rest as missing until the complete files are in place.
 
 ## Pipeline (run order)
 
@@ -41,7 +44,7 @@ output against §3/§6 of the report; the demo video opens with this command.
 a changed catalogue re-enters at stage 2. One row (SAMA CSF) mismatches **by
 design** — its URL serves a page, not the file; see `manifest.csv` notes.
 
-## Every figure ← its command
+## Every figure ← its command (with the full output files in place)
 
 | Figure in the report | Command |
 |---|---|
@@ -77,3 +80,6 @@ subdomains, and the evidenced-absence / not-tested split depends on that
 hand-curated map — broadening it would reclassify some of the 53 not-tested
 clauses, not change any judgment. The full account, including two figure-level
 corrections, is in report §7 and Appendix D.
+
+Note: prompt texts and full model outputs are abridged in this repository pending an academic
+publication; they will be released in full alongside the paper.
