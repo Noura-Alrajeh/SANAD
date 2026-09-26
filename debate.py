@@ -72,56 +72,26 @@ PROVISIONAL_LOW, PROVISIONAL_HIGH = 0.50, 0.70
 # --------------------------------------------------------------------------
 # opponent
 # --------------------------------------------------------------------------
-OPPONENT_SYSTEM = """You are a regulatory analyst reviewing someone else's mapping between the SAMA Cyber Security Framework (Saudi Arabia, 2017) and NIST SP 800-53 Rev 5.2.0. Your role is adversarial: find what is wrong with the proposed mapping.
-
-Relationship types, with the SAMA clause as the focal element:
-- equal: same requirement, same scope.
-- subset_of: the SAMA clause is narrower; the NIST control covers it and more.
-- superset_of: the SAMA clause is broader; it covers the control and more.
-- intersects_with: they overlap; neither contains the other.
-- not_related: no meaningful relationship.
-
-Attack the proposal on whichever of these grounds applies:
-
-1. WRONG TYPE. `intersects_with` is the answer people reach for when they have not worked out which side is broader. If everything the SAMA clause requires is covered by the control, the relationship is subset_of, not intersects_with. To defend intersects_with, you must be able to name something each side requires that the other does not. If you cannot name both, the type is wrong.
-2. WRONG DIRECTION. Check that subset_of and superset_of are not reversed.
-3. NOT RELATED AT ALL. The two may share vocabulary while requiring different things.
-4. WRONG CONTROL. A different control from the candidate list may fit better.
-5. MISREAD EVIDENCE. The quoted span may not support what is claimed of it.
-
-If the proposal is sound, say so. A reviewer who objects to everything is as useless as one who objects to nothing.
+OPPONENT_SYSTEM = """Regulatory analyst role: reviews another analyst's proposed SAMA-to-NIST
+mapping and objects where the type, direction, control, or quoted evidence does not hold. Full
+prompt text to appear with the forthcoming paper; available on request.
 
 Return ONLY a JSON object, no prose, no code fence:
 
 {"objection": true, "grounds": "wrong_type|wrong_direction|not_related|wrong_control|misread_evidence", "argument": "two sentences at most, citing the texts", "proposed_relationship": "equal|subset_of|superset_of|intersects_with|not_related", "proposed_control_id": "only if grounds is wrong_control, else empty", "strength": 0.0}
 
 To raise no objection: {"objection": false, "grounds": "", "argument": "why it is sound", "proposed_relationship": "", "proposed_control_id": "", "strength": 0.0}
+"""
 
-`strength` is how likely you think a domain expert would side with you, 0.0 to 1.0."""
 
-
-ARBITER_SYSTEM = """You are the deciding analyst. You see a proposed mapping between the SAMA Cyber Security Framework and NIST SP 800-53, and an objection to it. Rule on which is right.
-
-Relationship types, with the SAMA clause as the focal element:
-- equal: same requirement, same scope.
-- subset_of: the SAMA clause is narrower; the NIST control covers it and more.
-- superset_of: the SAMA clause is broader; it covers the control and more.
-- intersects_with: they overlap; neither contains the other. Only correct when you can name something each side requires that the other does not.
-- not_related: no meaningful relationship.
-
-Rules:
-
-1. Decide from the texts in front of you, not from knowledge of either framework.
-2. Your evidence must be quoted VERBATIM — an exact character-for-character substring of the text given, at least 15 characters from each side. No paraphrase, no ellipsis.
-3. Only the controls listed as candidates may be cited.
-4. If neither position is well supported, rule `unresolved`. That is a legitimate outcome and is preferred to a confident answer you cannot evidence.
-5. confidence is your probability that a domain expert would agree with your ruling.
+ARBITER_SYSTEM = """Deciding analyst role: rules on a proposed mapping and the objection raised
+against it, citing verbatim evidence from the texts placed before it. Full prompt text to appear
+with the forthcoming paper; available on request.
 
 Return ONLY a JSON object, no prose, no code fence:
 
 {"ruling": "uphold|revise|reject|unresolved", "relationship": "equal|subset_of|superset_of|intersects_with|not_related", "control_id": "...", "confidence": 0.0, "evidence_sama": "verbatim span", "evidence_nist": "verbatim span", "reasoning": "one or two sentences"}
-
-uphold: the original stands. revise: the relationship or control changes. reject: there is no relationship. unresolved: the texts do not settle it."""
+"""
 
 
 # --------------------------------------------------------------------------
