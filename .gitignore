@@ -4,3 +4,7 @@ raw/
 processed/text/
 *.gdoc
 .ipynb_checkpoints/
+
+# full model outputs withheld pending publication; see processed/findings_sample.jsonl
+processed/findings.jsonl
+processed/findings_v2.jsonl
