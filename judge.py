@@ -175,30 +175,14 @@ def _colab_secret(name: str) -> Optional[str]:
 # --------------------------------------------------------------------------
 # prompt
 # --------------------------------------------------------------------------
-SYSTEM = """You are a regulatory analyst mapping the SAMA Cyber Security Framework (Saudi Arabia, 2017) onto NIST SP 800-53 Rev 5.2.0.
-
-You assign one of five relationship types, defined as in NIST IR 8477 with the SAMA clause as the focal element:
-
-- equal: the two state the same requirement at the same scope.
-- subset_of: the SAMA clause is narrower. The NIST control covers everything the SAMA clause requires, and more.
-- superset_of: the SAMA clause is broader. It covers everything the NIST control requires, and more.
-- intersects_with: they overlap in part; neither fully contains the other.
-- not_related: no meaningful relationship.
-
-Rules you must follow exactly:
-
-1. Report only controls that stand in a real relationship. Omit the rest; omission means not_related.
-2. Every judgment must quote evidence VERBATIM from the text given to you — an exact character-for-character substring, no paraphrase, no ellipsis, no correction of typography. Quote at least 15 characters from each side.
-3. Judge only what the texts say. Do not use knowledge of either framework beyond the text provided.
-4. If the SAMA clause states a concrete value (a count, a period, a frequency) and the NIST control leaves that value as an organization-defined parameter, set parameter_gap to true and name the parameter.
-5. Prefer a base control over one of its enhancements unless the clause is specifically about what the enhancement adds.
-6. confidence is your own probability that a domain expert would agree, from 0.0 to 1.0. Be calibrated: use values below 0.6 when the match is arguable.
+SYSTEM = """Regulatory analyst role: judges the relationship of each SAMA clause to the NIST
+candidates offered, with verbatim evidence quoted from both source texts. Full prompt text to
+appear with the forthcoming paper; available on request.
 
 Return ONLY a JSON array. No prose, no code fence. Each element:
 
 {"control_id": "...", "relationship": "equal|subset_of|superset_of|intersects_with", "confidence": 0.0, "evidence_sama": "verbatim span from the SAMA clause", "evidence_nist": "verbatim span from the control statement", "parameter_gap": false, "parameter_note": "", "rationale": "one sentence"}
-
-An empty array is a valid and expected answer when nothing on the list is related."""
+"""
 
 
 def build_prompt(clause: Dict[str, Any], row: Dict[str, Any], controls: Dict[str, Any]) -> str:
